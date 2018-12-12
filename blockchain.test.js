@@ -1,5 +1,6 @@
 const Blockchain = require('./blockchain');
 const Block = require('./block');
+const crypto = require('./crypto');
 
 describe('Blockchain', () => {
     let  blockchain, newChain, originalChain;
@@ -45,6 +46,21 @@ describe('Blockchain', () => {
         });
         it('should return true if the chain is valid', () => {
             expect(Blockchain.isValidChain(blockchain.chain)).toBe(true);
+        });
+
+        it('should return false if the chain contains a block with a tampered difficulty', () => {
+            const lastBlock = blockchain.chain[blockchain.chain.length-1];
+            const previousHash = lastBlock.hash;
+            const timestamp = Date.now();
+            const nonce = 0;
+            const data = 'INVALID-DATA';
+            const difficulty = lastBlock.difficulty - 3;
+            const hash = crypto.sha256(timestamp, previousHash, difficulty, nonce, data);
+            const corruptBlock = new Block({
+                timestamp, previousHash, hash, nonce, difficulty, data
+            });
+            blockchain.chain.push(corruptBlock);
+            expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
         });
     });
 

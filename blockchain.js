@@ -29,9 +29,11 @@ class Blockchain{
         }
         for(let i = 1; i < chain.length; i++){
             const currentPreviousHash = chain[i - 1].hash;
+            const previousDifficulty = chain[i - 1].difficulty;
             const { timestamp, previousHash, hash, nonce, difficulty, data } = chain[i];
             if(currentPreviousHash != previousHash) return false;
             if(crypto.sha256(timestamp, previousHash, data, nonce, difficulty) !== hash) return false;
+            if ((previousDifficulty - difficulty) > 1) return false;
         }
         return true;
     }
