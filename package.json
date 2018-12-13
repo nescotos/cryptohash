@@ -4,7 +4,9 @@
   "description": "Node JS Blockchain Implementation",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache --watchAll --colors"
+    "test": "jest --no-cache --watchAll --colors",
+    "start": "node start.js",
+    "watch": "nodemon start.js"
   },
   "author": "Néstor Escoto",
   "license": "ISC",
@@ -12,9 +14,14 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
-    "jest": "^23.6.0"
+    "babel-register": "^6.26.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.8"
   },
   "dependencies": {
-    "hex-to-binary": "^1.0.1"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "hex-to-binary": "^1.0.1",
+    "redis": "^2.8.0"
   }
 }

@@ -9,5 +9,6 @@ module.exports = {
         difficulty: INITIAL_DIFFICULTY,
         nonce: 0
     },
-    MINE_RATE: 1000
+    MINE_RATE: 1000,
+    PORT: 3300
 }
