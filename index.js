@@ -2,9 +2,11 @@ const express = require('express');
 const Blockchain = require('./blockchain');
 const config = require('./config');
 const bodyParser = require('body-parser');
+const PubSub = require('./pubsub');
 
 const app = express();
 const blockchain = new Blockchain();
+const pubsub = new PubSub({blockchain});
 
 app.use(bodyParser.urlencoded({}));
 
