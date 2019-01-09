@@ -5,41 +5,50 @@ const CHANNELS = {
     BLOCKCHAIN: 'BLOCKCHAIN'
 };
 
-class PubSub{
-    constructor({blockchain}){
+class PubSub {
+    constructor({ blockchain }) {
         this.blockchain = blockchain;
 
         this.publisher = redis.createClient();
         this.subscriber = redis.createClient();
-        
-        Object.values(CHANNELS).map(channel => {
-            this.subscriber.subscribe(channel);
-        });
 
-        this.subscriber.on('message', this.handleMessage);
+        this.subscribeToChannels();
+
+        this.subscriber.on(
+            'message',
+            (channel, message) => this.handleMessage(channel, message)
+        );
     }
 
-    handleMessage(channel, message){
-        console.log(`Message Received from Chanel: ${channel} Message: ${message}`);
+    handleMessage(channel, message) {
+        console.log(`Message received. Channel: ${channel}. Message: ${message}.`);
 
         const payload = JSON.parse(message);
 
-        if(channel === CHANNELS.BLOCKCHAIN){
+        if (channel === CHANNELS.BLOCKCHAIN) {
             this.blockchain.replaceChain(payload);
         }
     }
 
-    publish({channel, message}) {
-        this.publisher.publish(channel, message);
+    subscribeToChannels() {
+        Object.values(CHANNELS).forEach(channel => {
+            this.subscriber.subscribe(channel);
+        });
     }
 
-    broadcastChain(){
-        this.publish(
-            {
-                channel: CHANNELS.BLOCKCHAIN,
-                message: JSON.stringify(this.blockchain.chain)
-            }
-        );
+    publish({ channel, message }) {
+        this.subscriber.unsubscribe(channel, () => {
+            this.publisher.publish(channel, message, () => {
+                this.subscriber.subscribe(channel);
+            });
+        });
+    }
+
+    broadcastChain() {
+        this.publish({
+            channel: CHANNELS.BLOCKCHAIN,
+            message: JSON.stringify(this.blockchain.chain)
+        });
     }
 }
 

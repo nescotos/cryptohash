@@ -8,6 +8,10 @@ const app = express();
 const blockchain = new Blockchain();
 const pubsub = new PubSub({blockchain});
 
+setTimeout(() => {
+    pubsub.broadcastChain();
+}, 1000);
+
 app.use(bodyParser.urlencoded({}));
 
 app.get('/api/blocks', (req, res) => {
@@ -20,6 +24,15 @@ app.post('/api/mine', (req, res) => {
     res.send('- Transaction being mined!');
 });
 
-app.listen(config.PORT, () => {
-    console.log(`- Node Runing at ${config.PORT}`);
+const DEFAULT_PORT = config.PORT;
+let PEER_PORT;
+
+if(process.env.GENERATE_PEER_PORT === 'true'){
+    PEER_PORT = DEFAULT_PORT + Math.ceil(Math.random() * 1000);
+}
+
+const PORT = PEER_PORT || DEFAULT_PORT;
+
+app.listen(PORT, () => {
+    console.log(`- Node Runing at ${PORT}`);
 });
