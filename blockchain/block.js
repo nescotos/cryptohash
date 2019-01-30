@@ -1,5 +1,5 @@
-import { GENESIS_DATA, MINE_RATE } from './config';
-const crypto = require('./crypto');
+import { GENESIS_DATA, MINE_RATE } from '../config';
+const crypto = require('../utils/crypto');
 const hexToBinary = require('hex-to-binary');
 
 class Block {

@@ -10,5 +10,6 @@ module.exports = {
         nonce: 0
     },
     MINE_RATE: 1000,
-    PORT: 3300
+    PORT: 3300,
+    STARTING_BALANCE: 1000
 }
