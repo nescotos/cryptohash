@@ -1,6 +1,6 @@
 const Block = require('./block');
 const config = require('../config');
-const crypto = require('../utils/crypto');
+const crypto = require('../utils');
 const hexToBinary = require('hex-to-binary');
 
 describe('Block', () => {

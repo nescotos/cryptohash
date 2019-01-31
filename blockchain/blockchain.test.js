@@ -1,6 +1,6 @@
 const Blockchain = require('./blockchain');
 const Block = require('./block');
-const crypto = require('../utils/crypto');
+const {sha256} = require('../utils');
 
 describe('Blockchain', () => {
     let  blockchain, newChain, originalChain;
@@ -55,7 +55,7 @@ describe('Blockchain', () => {
             const nonce = 0;
             const data = 'INVALID-DATA';
             const difficulty = lastBlock.difficulty - 3;
-            const hash = crypto.sha256(timestamp, previousHash, difficulty, nonce, data);
+            const hash = sha256(timestamp, previousHash, difficulty, nonce, data);
             const corruptBlock = new Block({
                 timestamp, previousHash, hash, nonce, difficulty, data
             });

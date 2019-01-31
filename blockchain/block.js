@@ -1,5 +1,5 @@
 import { GENESIS_DATA, MINE_RATE } from '../config';
-const crypto = require('../utils/crypto');
+const {sha256} = require('../utils');
 const hexToBinary = require('hex-to-binary');
 
 class Block {
@@ -32,7 +32,7 @@ class Block {
             nonce++;
             timestamp = Date.now();
             difficulty = this.adjustDifficulty({ originalBlock: lastBlock, timestamp});
-            hash = crypto.sha256(timestamp, previousHash, data, nonce, difficulty)
+            hash = sha256(timestamp, previousHash, data, nonce, difficulty)
         }while(hexToBinary(hash).substring(0, difficulty) !== '0'.repeat(difficulty))
         return new this(
             {
@@ -41,7 +41,7 @@ class Block {
                 data,
                 difficulty,
                 nonce,
-                hash: crypto.sha256(timestamp, previousHash, data, nonce, difficulty)
+                hash: sha256(timestamp, previousHash, data, nonce, difficulty)
             }
         )
     }

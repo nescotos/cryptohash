@@ -8,4 +8,4 @@ const verifySignature = ({signature, publicKey, data}) => {
     return keyFromPublic.verify(sha256(data), signature); 
 };
 
-module.exports = { ec, verifySignature };
+module.exports = { ec, verifySignature, sha256 };

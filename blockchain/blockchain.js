@@ -1,5 +1,5 @@
 const Block = require('./block');
-const crypto = require('../utils/crypto');
+const {sha256} = require('../utils');
 
 class Blockchain{
     constructor(){
@@ -32,7 +32,7 @@ class Blockchain{
             const previousDifficulty = chain[i - 1].difficulty;
             const { timestamp, previousHash, hash, nonce, difficulty, data } = chain[i];
             if(currentPreviousHash != previousHash) return false;
-            if(crypto.sha256(timestamp, previousHash, data, nonce, difficulty) !== hash) return false;
+            if(sha256(timestamp, previousHash, data, nonce, difficulty) !== hash) return false;
             if ((previousDifficulty - difficulty) > 1) return false;
         }
         return true;
