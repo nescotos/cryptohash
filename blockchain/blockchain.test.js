@@ -4,6 +4,8 @@ const {sha256} = require('../utils');
 
 describe('Blockchain', () => {
     let  blockchain, newChain, originalChain;
+    let errorMocked = jest.fn();
+    global.console.error = errorMocked;
     beforeEach(() => {
         blockchain = new Blockchain();
         newChain = new Blockchain();
@@ -80,6 +82,7 @@ describe('Blockchain', () => {
             it('should not replace the chain if the new chain is longer but invalid', () => {
                 newChain.chain[1].hash = 'tampered-hash';
                 blockchain.replaceChain(newChain.chain);
+                expect(errorMocked).toBeCalled();
                 expect(blockchain.chain).toEqual(originalChain.chain);
             });
             it('should replace the chain if the new chain is longer', () => {

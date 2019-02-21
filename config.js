@@ -11,5 +11,9 @@ module.exports = {
     },
     MINE_RATE: 1000,
     PORT: 3300,
-    STARTING_BALANCE: 1000
+    STARTING_BALANCE: 1000,
+    REWARD: {
+        address: 'authority'
+    },
+    REWARD_RATE: 100
 }
